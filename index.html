@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title id="title-el"
+  data-en="TinyWin Camera · Progress Photo Habit Tracker"
+  data-zh="TinyWin Camera · 进步相机（每天一张进步照）">TinyWin Camera · Progress Photo Habit Tracker</title>
+
+<meta name="description" id="meta-desc"
+  data-en="TinyWin Camera helps you build habits with one progress photo a day. Compare yesterday vs today, track streaks & milestones, view timeline, export MP4 time-lapse, and see insights with charts and heatmaps."
+  data-zh="TinyWin Camera 通过每天一张“进步照片”帮助你养成习惯：昨天对比今天、智能连击与里程碑、进步时间轴、MP4 延时视频导出，以及趋势图与年度热力图数据洞察。"
+  content="TinyWin Camera helps you build habits with one progress photo a day. Compare yesterday vs today, track streaks & milestones, view timeline, export MP4 time-lapse, and see insights with charts and heatmaps.">
+
+<link rel="icon" href="tinywin_128.png">
+
+<style>
+:root{
+  /* TinyWin Camera 深色主题 */
+  --bg:#050712; 
+  --surface:#111525; 
+  --text:#F5F7FF; 
+  --text2:#B9C3DA;
+
+  --accent:#6EE7FF;
+  --accent2:#4F8CFF;
+
+  --chip:#1B2238; 
+  --chip2:#1A2036;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, 
+  Noto Sans, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+}
+a{color:var(--accent);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:40px 24px}
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700}
+.brand img.icon{width:40px;height:40px;border-radius:12px}
+.lang-switch{display:flex;gap:8px;background:var(--surface);border-radius:12px;padding:6px}
+.lang-switch button{all:unset;cursor:pointer;padding:6px 14px;border-radius:10px;color:var(--text2);font-weight:600}
+.lang-switch button.active{background:var(--accent);color:#0B1220}
+.nav-links{display:flex;gap:18px;align-items:center}
+.nav-links a{color:var(--text2);font-weight:600}
+.nav-links a:hover{color:var(--text)}
+
+.hero{display:grid;grid-template-columns:1.1fr 0.9fr;gap:36px;align-items:center;margin-top:40px}
+.hero h1{font-size:40px;line-height:1.1;margin:0 0 16px}
+.hero p.lead{color:var(--text2);font-size:18px;margin:0 0 24px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.button{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(180deg,var(--accent),var(--accent2));
+  color:#0B1220;font-weight:700;padding:14px 22px;border-radius:14px;
+  box-shadow:0 10px 30px rgba(79,140,255,.25);
+} 
+.button.ghost{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.15)}
+.card{background:var(--surface);border-radius:20px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.25);} 
+.section{margin-top:80px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.tag{
+  display:inline-block;padding:6px 10px;border-radius:8px;font-size:13px;
+  background:rgba(110,231,255,.16);color:#CFF8FF
+}
+.sample{width:100%;border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.35);background:#0f1118;aspect-ratio:9/19.5;object-fit:cover}
+.footer{margin-top:80px;color:var(--text2);font-size:14px;border-top:1px solid rgba(255,255,255,.08);padding:32px 0}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.gallery img{
+  width:100%;border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.35);
+  background:#0f1118;aspect-ratio:9/19.5;object-fit:cover
+}
+/* 竖屏图比例 */
+.gallery img.portrait { aspect-ratio: 9 / 19.5; }
+/* 横屏图比例 (iPad & 平板横屏) */
+.gallery img.landscape { aspect-ratio: 16 / 10; }
+@media (max-width:960px){ .hero{grid-template-columns:1fr} }
+
+/* 英雄区：TinyWin UI 示意卡片（沿用原结构） */
+.pn-card{border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35);background:#0F1528}
+.pn-top{
+  padding:22px 22px 10px;color:#CFF8FF;font-weight:800;letter-spacing:.04em
+}
+.pn-body{
+  background:
+    radial-gradient(circle at 10% 0%,rgba(110,231,255,.35),rgba(110,231,255,0) 55%),
+    linear-gradient(180deg,#151A33,#070B18);
+  padding:22px
+}
+.pn-row{display:flex;align-items:center;gap:10px;margin:10px 0}
+.pn-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:radial-gradient(circle at 30% 0%,#B9F6FF,#4F8CFF);
+  opacity:.9
+}
+.pn-line{
+  height:10px;border-radius:6px;background:rgba(255,255,255,.10);flex:1
+}
+.pn-line.bold{height:14px;background:rgba(255,255,255,.16);width:70%}
+.pn-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.06);
+  color:var(--text2);font-size:12px;font-weight:600
+}
+.pn-dots{display:flex;gap:6px}
+.pn-dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.pn-bar{background:#0B0F1E;color:#E6F7FF;text-align:center;padding:12px;font-weight:700}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <nav>
+    <div class="brand">
+      <!-- 替换为 TinyWin Camera 图标 -->
+      <img class="icon" src="tinywin_128.png" alt="TinyWin Camera icon">
+      <span>
+        <span data-en="TinyWin Camera" data-zh="TinyWin Camera"></span> ·
+        <span data-en="Progress Photo Habit Tracker" data-zh="进步相机 · 可视化打卡与习惯养成"></span>
+      </span>
+    </div>
+
+    <div class="nav-links">
+      <a href="#privacy" data-en="Privacy" data-zh="隐私"></a>
+      <a href="#support" data-en="Support" data-zh="支持"></a>
+    </div>
+
+    <div class="lang-switch">
+      <button id="btn-en" class="active">English</button>
+      <button id="btn-zh">中文</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <h1
+        data-en="One progress photo a day—turn habits into visible change."
+        data-zh="每天一张进步照：把坚持变成看得见的变化"></h1>
+
+      <p class="lead"
+         data-en="TinyWin Camera helps you track goals and challenges with a simple daily photo. Compare yesterday vs today, keep smarter streaks (rest days won’t break them), get milestone boosts, browse a progress timeline, export MP4 time-lapse videos, and view insights with charts and heatmaps."
+         data-zh="TinyWin Camera 用“每天一张照片”帮你追踪目标与挑战：昨天对比今天便于对齐，智能连击支持休息日不掉线，里程碑进度环持续激励，进步时间轴像翻日记一样回看变化，一键导出 MP4 延时视频，并用趋势图与年度热力图洞察你的坚持。"></p>
+
+      <div class="cta">
+        <a href="#" class="button" data-en="Download on the App Store" data-zh="在 App Store 下载"></a>
+        <a href="#features" class="button ghost" data-en="See features" data-zh="查看功能"></a>
+      </div>
+
+      <div style="margin-top:24px;color:var(--text2)">
+        <span>• </span>
+        <span
+          data-en="Daily photo · Yesterday vs Today · Smart streaks · Milestones · Timeline · MP4 time-lapse · Heatmap & insights"
+          data-zh="每日一拍 · 昨天对比今天 · 智能连击 · 里程碑激励 · 进步时间轴 · MP4 延时视频 · 热力图与洞察"></span>
+      </div>
+    </div>
+
+    <div>
+      <!-- 英雄示意卡：TinyWin UI -->
+      <div class="pn-card">
+        <div class="pn-top" data-en="TinyWin Camera · Today" data-zh="TinyWin Camera · 今日打卡"></div>
+        <div class="pn-body">
+          <div class="pn-row">
+            <div class="pn-avatar"></div>
+            <div class="pn-line bold"></div>
+          </div>
+
+          <div class="pn-row">
+            <span class="pn-chip">
+              <span data-en="Compare: Yesterday vs Today" data-zh="对比：昨天 vs 今天"></span>
+            </span>
+            <span class="pn-chip">
+              <span data-en="Mode: Habit / Challenge" data-zh="模式：习惯 / 挑战"></span>
+            </span>
+          </div>
+
+          <div class="pn-row">
+            <div class="pn-line" style="width:92%"></div>
+          </div>
+
+          <div class="pn-row">
+            <span class="pn-chip">
+              <span data-en="Streak: Smart & Flexible" data-zh="连击：智能不掉线"></span>
+            </span>
+            <span class="pn-chip">
+              <span data-en="Milestones: 25/50/75%" data-zh="里程碑：25/50/75%"></span>
+              <span class="pn-dots"><span class="pn-dot"></span><span class="pn-dot"></span></span>
+            </span>
+          </div>
+
+          <div class="pn-row">
+            <span class="pn-chip">
+              <span data-en="Time-lapse: Export MP4" data-zh="延时：导出 MP4"></span>
+            </span>
+            <span class="pn-chip">
+              <span data-en="Insights · Heatmap" data-zh="洞察 · 热力图"></span>
+            </span>
+          </div>
+        </div>
+
+        <div class="pn-bar"
+             data-en="Shoot → Note → Streak → Time-lapse"
+             data-zh="拍照 → 记一句 → 连击 → 延时回看"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <h2 data-en="Key features" data-zh="核心功能"></h2>
+    <div class="grid-3" style="margin-top:24px">
+
+      <!-- 目标与挑战 -->
+      <div class="card">
+        <div class="tag" data-en="Goals" data-zh="目标"></div>
+        <h3 style="margin:12px 0"
+            data-en="Goals & challenges"
+            data-zh="目标与挑战管理"></h3>
+        <p class="text2"
+           data-en="Habit Mode (indefinite) and Challenge Mode (fixed days like 30/100). Choose daily, weekly, weekdays, or custom schedules. Archive and restore anytime."
+           data-zh="支持日常习惯（无期限）与限定挑战（30/100 天等）。频率可选每天/每周/工作日/自定义星期；项目支持归档、恢复与彻底删除，并清理本地文件。"></p>
+      </div>
+
+      <!-- 昨天对比今天 -->
+      <div class="card">
+        <div class="tag" data-en="Compare" data-zh="对比"></div>
+        <h3 style="margin:12px 0"
+            data-en="Yesterday vs Today"
+            data-zh="昨天 vs 今天对齐"></h3>
+        <p class="text2"
+           data-en="See yesterday’s photo while capturing today’s to align angle, lighting, and framing—perfect for visible progress."
+           data-zh="拍摄当天照片时自动展示昨天照片，辅助对齐角度/光线/构图，让变化更直观、更可坚持。"></p>
+      </div>
+
+      <!-- 编辑与笔记 -->
+      <div class="card">
+        <div class="tag" data-en="Edit" data-zh="编辑"></div>
+        <h3 style="margin:12px 0"
+            data-en="Crop, filters, and notes"
+            data-zh="裁剪、滤镜与随想笔记"></h3>
+        <p class="text2"
+           data-en="One-tap 1:1 crop, curated filters (Vivid/Mono/Noir/Warm), quick daily notes, and a readable date watermark."
+           data-zh="一键 1:1 正方形裁剪，精选滤镜（Vivid/Mono/Noir/Warm），每日一句笔记，自动日期水印（带阴影更清晰）。"></p>
+      </div>
+
+      <!-- 连击与里程碑 -->
+      <div class="card">
+        <div class="tag" data-en="Streaks" data-zh="连击"></div>
+        <h3 style="margin:12px 0"
+            data-en="Smart streaks & milestones"
+            data-zh="智能连击与里程碑激励"></h3>
+        <p class="text2"
+           data-en="Rest days won’t break your streak on scheduled plans. Earn milestone boosts (25/50/75%) and bonus surprises for extra wins."
+           data-zh="针对含休息日的计划：休息日不打卡不掉连击；里程碑进度（25/50/75%）自动拆解，休息日加练还有 Bonus 惊喜提示。"></p>
+      </div>
+
+      <!-- 延时视频 -->
+      <div class="card">
+        <div class="tag" data-en="Time-lapse" data-zh="延时"></div>
+        <h3 style="margin:12px 0"
+            data-en="Export MP4 time-lapse"
+            data-zh="一键生成 MP4 延时视频"></h3>
+        <p class="text2"
+           data-en="Turn all photos in a goal into a high-quality MP4 time-lapse. Stream loading + memory release keeps exports stable for long projects."
+           data-zh="将目标下的历史照片无损合成为 MP4 延时视频；采用流式读取与内存释放，几百天目标也能稳定导出。"></p>
+      </div>
+
+      <!-- 洞察面板 -->
+      <div class="card">
+        <div class="tag" style="background:rgba(255,255,255,.12);color:#fff"
+             data-en="Insights" data-zh="洞察"></div>
+        <h3 style="margin:12px 0"
+            data-en="Charts, heatmap, and sharing"
+            data-zh="趋势图、热力图与一键分享"></h3>
+        <p class="text2"
+           data-en="See your 30-day consistency chart, a yearly heatmap grid, stats like longest streak/total wins, and share polished poster cards."
+           data-zh="30 天趋势图 + 年度热力图；核心成就统计（最长连击/累计打卡）；一键生成精致分享海报。"></p>
+      </div>
+
+      <!-- 时间轴 -->
+      <div class="card">
+        <div class="tag" data-en="Timeline" data-zh="时间轴"></div>
+        <h3 style="margin:12px 0"
+            data-en="Progress timeline"
+            data-zh="进步时间轴瀑布流"></h3>
+        <p class="text2"
+           data-en="Browse photos and notes in a vertical, reverse-chronological timeline—like a visual diary of your transformation."
+           data-zh="按时间倒序串联每天的照片与笔记，像翻日记一样回看蜕变过程，进步一目了然。"></p>
+      </div>
+
+      <!-- 通知提醒 -->
+      <div class="card">
+        <div class="tag" data-en="Reminders" data-zh="提醒"></div>
+        <h3 style="margin:12px 0"
+            data-en="Smart notifications"
+            data-zh="智能提醒通知"></h3>
+        <p class="text2"
+           data-en="Local reminders follow your schedule and automatically stop when a goal is completed or archived."
+           data-zh="本地提醒与目标频率绑定，只在打卡日提醒；目标完成或归档后自动取消通知，避免打扰。"></p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 data-en="Screenshots" data-zh="界面预览"></h2>
+    <p class="lead"
+       data-en="Replace the images below with real screenshots from TinyWin Camera."
+       data-zh="将下方占位图替换为 TinyWin Camera 的真实截图。"></p>
+    <div class="gallery" style="margin-top:16px">
+      <img class="portrait" src="ss_en_1.png" data-en-src="ss_en_1.png" data-zh-src="ss_zh_1.png" alt="TinyWin Camera screenshot 1">
+      <img class="portrait" src="ss_en_2.png" data-en-src="ss_en_2.png" data-zh-src="ss_zh_2.png" alt="TinyWin Camera screenshot 2">
+      <img class="portrait" src="ss_en_3.png" data-en-src="ss_en_3.png" data-zh-src="ss_zh_3.png" alt="TinyWin Camera screenshot 3">
+      <img class="portrait" src="ss_en_4.png" data-en-src="ss_en_4.png" data-zh-src="ss_zh_4.png" alt="TinyWin Camera screenshot 4">
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid-2">
+      <div class="card">
+        <h2 id="privacy" data-en="Privacy" data-zh="隐私"></h2>
+        <p class="text2"
+           data-en="TinyWin Camera is designed with privacy in mind."
+           data-zh="TinyWin Camera 以隐私优先为设计原则。"></p>
+        <ul style="margin:12px 0 0 18px; color: var(--text2); line-height:1.7">
+          <li
+            data-en="No account required. Start capturing right away."
+            data-zh="无需注册账号，打开即可开始打卡。"></li>
+          <li
+            data-en="Photos and notes are stored on your device by default."
+            data-zh="照片与笔记默认保存在本机。"></li>
+          <li
+            data-en="Notifications are local and do not upload your content."
+            data-zh="通知为本地推送，不会上传你的内容。"></li>
+          <li
+            data-en="Exporting/sharing only happens when you initiate it."
+            data-zh="导出/分享仅在你主动操作时生成文件。"></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2 id="support" data-en="Support" data-zh="支持"></h2>
+        <p class="text2"
+           data-en="Questions or feedback about TinyWin Camera? Email us."
+           data-zh="关于 TinyWin Camera 的问题或建议，欢迎邮件联系。"></p>
+        <p><a href="mailto:freesysck@outlook.com">freesysck@outlook.com</a></p>
+        <p>
+          <a href="#" target="_blank" rel="noopener"
+             data-en="Marketing site" data-zh="营销网站"></a><br>
+          <a href="#" target="_blank" rel="noopener"
+             data-en="Privacy policy" data-zh="隐私政策"></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="grid-2">
+      <div>
+        <strong>
+          <span data-en="TinyWin Camera" data-zh="TinyWin Camera"></span> ·
+          <span data-en="Progress Photo Habit Tracker" data-zh="进步相机 · 可视化打卡与习惯养成"></span>
+        </strong><br>
+        <span
+          data-en="© 2026 TinyWin Camera. All rights reserved."
+          data-zh="© 2026 TinyWin Camera。保留所有权利。"></span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+function swapLangImages(lang){
+  document.querySelectorAll("img[data-en-src]").forEach(img=>{
+    const src = img.getAttribute(lang==="zh" ? "data-zh-src" : "data-en-src");
+    if(src) img.setAttribute("src", src);
+  });
+}
+function setLang(lang){
+  document.querySelectorAll("[data-en]").forEach(el=>{
+    const text = el.getAttribute(lang === "zh" ? "data-zh" : "data-en");
+    if(text!==null){ el.textContent = text; }
+  });
+  const titleEl = document.getElementById("title-el");
+  if(titleEl){
+    const t = titleEl.getAttribute(lang === "zh" ? "data-zh" : "data-en");
+    if(t) document.title = t;
+  }
+  const metaDesc = document.getElementById("meta-desc");
+  if(metaDesc){
+    const d = metaDesc.getAttribute(lang === "zh" ? "data-zh" : "data-en");
+    if(d) metaDesc.setAttribute("content", d);
+  }
+  swapLangImages(lang);
+  document.getElementById("btn-en").classList.toggle("active", lang==="en");
+  document.getElementById("btn-zh").classList.toggle("active", lang==="zh");
+  localStorage.setItem("TinyWin-lang", lang);
+}
+document.getElementById("btn-en").onclick=()=>setLang("en");
+document.getElementById("btn-zh").onclick=()=>setLang("zh");
+const saved = localStorage.getItem("TinyWin-lang") || (navigator.language.startsWith("zh")?"zh":"en");
+setLang(saved);
+</script>
+
+</body>
+</html>
